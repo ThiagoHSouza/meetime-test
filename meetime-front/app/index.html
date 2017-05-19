@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="meetime">
+	<head>
+		<meta charset="utf-8">
+		<title>Sou Ninja</title>
+
+	    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+	    <link rel="stylesheet" href="css/app.css">
+
+	</head>
+	<body >
+
+		<div ui-view style="height: 100%;"></div>
+
+		<!-- dist -->
+		<script src="bower_components/angular/angular.js"></script>
+    	<script src="bower_components/angular-aria/angular-aria.js"></script>
+    	<script src="bower_components/angular-animate/angular-animate.js"></script>
+	    <script src="bower_components/angular-messages/angular-messages.js"></script>
+    	<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+	    <script src="bower_components/angular-material/angular-material.js"></script>
+	    <script src="bower_components/angular-ui-mask/dist/mask.js"></script>
+
+		<!-- APP -->
+	    <script src="app/app.js"></script>
+
+		<!-- Directives -->
+	    <script src="app/components/sn-autofocus.directive.js"></script>
+
+		<!-- Services -->
+	    <script src="app/services/carApi.factory.js"></script>
+	    <script src="app/services/colorCarApi.factory.js"></script>
+	    <script src="app/services/pipedriveApi.factory.js"></script>
+
+		<!-- Controllers -->
+	    <script src="app/home.controller.js"></script>
+	    <script src="app/templates/content/car/car.controller.js"></script>
+	</body>
+</html>

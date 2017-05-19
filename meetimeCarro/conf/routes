@@ -1,0 +1,14 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# ColorCar
+GET		/api/colorCar					br.com.meetime.controllers.ColorCarController.listColors
+
+# Car
+POST	/api/car						br.com.meetime.controllers.CarController.create
+PUT		/api/car						br.com.meetime.controllers.CarController.update
+GET		/api/car/:id					br.com.meetime.controllers.CarController.findById(id:Long)
+GET		/api/car						br.com.meetime.controllers.CarController.findAll
+DELETE	/api/car/:id					br.com.meetime.controllers.CarController.delete(id:Long)
+

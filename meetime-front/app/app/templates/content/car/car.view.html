@@ -1,0 +1,184 @@
+<div class="coc-order" layout="column" >
+	<div class="coc-background" ng-if="displayInformation"></div>
+
+	<md-card flex="40" layout-wrap class="coc-register coc-top" >
+		<md-card-content layout="column" ng-class="{'card-error' : createError}">
+			<div layout="row" flex layout-align="start center">
+				<span class="coc-title">Carro</span> 
+
+				<div flex>
+						
+				</div>
+				<span ng-style="{'color': carCtrl.keyPipedrive?'green':'red'}" >
+					{{keyMsg.msg}}
+				</span>
+				<div  layout="row" layout-align="end center">
+					<md-button 
+						ng-click="carCtrl.showChangeKey()"
+						class="md-fab md-mini md-whiteframe-4dp" 
+						ng-style="{'background': carCtrl.keyPipedrive ? 'green':'red'}"
+						aria-label="registro" >
+			          	<md-icon md-svg-src="img/icons/key.svg"></md-icon>
+			        </md-button>			
+				</div>
+
+				<div  layout="row" layout-align="end center">
+					<md-button 
+						ng-if="carCtrl.keyPipedrive"
+						ng-click="carCtrl.showCarRegister()"
+						class="md-fab md-mini md-primary md-whiteframe-4dp" 
+						ng-style="{background : carCtrl.car.color.code }"
+						aria-label="registro" >
+			          	<md-icon 
+						ng-style="{color : carCtrl.car.color.code == 'WHITE' ? '#444' : '#fff' }" md-svg-src="img/icons/car.svg"></md-icon>
+			        </md-button>			
+				</div>
+			</div>
+
+			<form name="carForm" 
+				novalidate
+				ng-if="displayInformation" 
+				ng-submit="carCtrl.saveCar(carCtrl.car, carForm)"
+				class="coc-form">
+				<div flex="100" flex-gt-sm="80">
+
+					<div layout="row" flex layout-align="start center">
+						<span class="coc-label">Modelo:</span>
+						<md-input-container flex md-no-float class="md-block">
+				          	<input
+				          		name="model" 
+				          		sn-autofocus="displayInformation"
+				          		ng-model="carCtrl.car.model" 
+				          		placeholder="Modelo do carro." 
+				          	>
+				        </md-input-container>
+					</div>
+
+					<div layout="row">
+						<div layout="row" flex layout-align="start center">
+							<span class="coc-label">Ano:</span>
+							<md-input-container flex md-no-float class="md-block">
+								<input 
+									ng-blur="carCtrl.verifyDocumentNumeber(carCtrl.car.year, carForm.year)"
+									name="year"
+									ui-mask="9999"
+									aria-label="Número do documento"
+									ng-model="carCtrl.car.year" 
+								>
+							</md-input-container>
+							<md-progress-circular ng-if="checkingNumberDocument" class="md-hue-5 " md-mode="indeterminate" md-diameter="33px"></md-progress-circular>
+						</div>
+
+						<div layout="row" flex layout-align="start center">
+							<span class="coc-label">Cor:</span>
+							<md-select 
+								flex
+								name="color"
+								placeholder="Selecione a cor" 
+								ng-model="carCtrl.car.color" 
+								style="min-width: 200px;">
+								<md-option 
+									ng-value="color" 
+									ng-repeat="color in carCtrl.listColors">
+									{{color.description}}
+								</md-option>
+							</md-select>
+						</div>
+					</div>
+					<div layout="row" flex layout-align="start center" style="margin-top: 15px">
+						<span class="coc-label">Responsável:</span>
+						<md-autocomplete
+							flex
+							md-selected-item="carCtrl.selectedItem"
+							md-search-text-change="carCtrl.searchTextChange(person)"
+							md-search-text="person"
+							md-selected-item-change="carCtrl.selectedItemChange(itemPerson)"
+							md-items="itemPerson in carCtrl.searchPersonPipedrive(person)"
+							md-item-text="itemPerson.name"
+							md-min-length="0"
+							placeholder="Pessoa cadastrada no Pipedrive responsável pelo carro">
+							<md-item-template>
+							<span md-highlight-text="searchPerson" md-highlight-flags="^i">{{itemPerson.email}}</span>
+							</md-item-template>
+							<md-not-found>
+								Não foi possível encontrar "{{searchPerson}}" nos registros do Pipedriver.
+							<a href="https://testemeetime.pipedrive.com/persons" target="_blanck">Adicione!</a>
+							</md-not-found>
+						</md-autocomplete>
+					</div>
+				</div>
+				<div layout="row" layout-align="end center" class="confirm-buttons"> 
+					<span flex class="message-error">{{createError}}</span>
+					<md-button class="md-raised md-mini md-primary" aria-label="save" type="submit">
+			            Salvar
+			        </md-button>
+			        <md-button class="md-raised md-mini" aria-label="cancel" ng-click="carCtrl.cancelCreate()">
+			            Cancelar
+			        </md-button>
+					
+				</div>
+			</form>
+
+		</md-card-content>
+	</md-card>
+
+	<md-card ng-if="changeKey" flex="40" layout-wrap style=" margin-top: -1px;" class="coc-register coc-top" >
+		<md-card-content layout="column">
+			<form name="carForm" 
+				novalidate
+				layout="row"
+				ng-submit="carCtrl.saveKey(keyPipedrive)"
+				class="coc-form">
+				<div layout="row" flex layout-align="start center">
+						<span class="coc-label">Chave Pipedrive:</span>
+						<md-input-container flex md-no-float class="md-block">
+				          	<input
+				          		name="keyPipedrive" 
+				          		sn-autofocus="changeKey"
+				          		ng-model="keyPipedrive" 
+				          		placeholder="Chave Pipedrive Api." 
+				          	>
+				        </md-input-container>
+					</div>
+
+					<md-button class="md-raised md-mini md-primary" aria-label="save" ng-click="carCtrl.saveKey(keyPipedrive)">
+			            enviar
+			        </md-button>
+			</form>
+		</md-card-content>
+	</md-card>
+
+	<div flex layout="row" layout-align="center center" style="color: #666; margin-top: 20px;" ng-if="!carCtrl.listCars.length">
+		<span>{{ !carCtrl.keyPipedrive ? 'Favor informar a chave da API Pipedrive para poder prosseguir.' : 'Nenhum carro cadastrado.'}}</span>
+	</div>
+
+	<div style="margin-top: 20px">
+
+		<md-card flex layout-wrap class="coc-register" ng-repeat="car in carCtrl.listCars track by $index">
+			<md-card-content layout="column" class="meet-car">
+				<div layout="row" flex layout-align="start center">
+					<div class="meet-car-color md-whiteframe-2dp" ng-style="{background : car.color.code}" layout="column" layout-align="center center" ng-class="{'font-black':car.color.code == 'WHITE'}">
+						<span>{{car.id}}</span>
+					</div>
+					<div flex="30" layout="column" layout-align="center start">
+						<span class="coc-label">Modelo/Ano:</span>
+						<span class="coc-info">{{car.model + '/' + car.year + ' - ' + car.color.description}} </span>					
+					</div>
+
+
+					<div flex layout="column">
+						<span class="coc-label">Responsável:</span>
+						<span class="coc-info">{{car.personPipedrive.email || 'buscando...'}}</span>					
+					</div>
+
+					<div style="width: 100px;" flex="nogrow"  layout="row" layout-align="end center">
+						<div ng-if="trOver == product.idProduct || true">
+							<md-icon class="coc-icon coc-icon-md coc-icon-cart" ng-if="carCtrl.keyPipedrive"  ng-click="carCtrl.showCarRegister(car)" md-svg-icon="img/icons/edit.svg"></md-icon>
+							<md-icon class="coc-icon coc-icon-md coc-icon-cart" ng-click="carCtrl.showConfirmRemove($event, $index)" md-svg-icon="	img/icons/delete.svg"></md-icon>
+						</div>
+					</div>
+				</div>
+			</md-card-content>
+		</md-card>
+	</div>
+</div>
